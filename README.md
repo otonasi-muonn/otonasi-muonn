@@ -1,5 +1,5 @@
 # otonasi-muonn 
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=otonasi-muonn&show_icons=true&theme=radical)
+![GitHub Streak](https://streak-stats.demolab.com)
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=otonasi-muonn&layout=compact)](https://github-readme-stats.vercel.app/api/top-langs/?username=otonasi-muonn&layout=compact)
+[![Top Langs](https://github-readme-stats-eight-theta.vercel.app)](https://github.com/anuraghazra/github-readme-stats)
