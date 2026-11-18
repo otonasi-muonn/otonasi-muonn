@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="930" height="315" viewBox="0 0 930 315">
+<title>Stateful Fibonacci computation inside a CSS-powered SVG image</title>
+<desc>CSS stores two previous values and uses them to calculate the next Fibonacci term. No JavaScript. Values are calculated modulo 100 so the animation can continue indefinitely.</desc>
+<style><![CDATA[
+@property --clock { syntax:"<integer>"; inherits:true; initial-value:0; }
+@property --a { syntax:"<integer>"; inherits:true; initial-value:0; }
+@property --b { syntax:"<integer>"; inherits:true; initial-value:1; }
+@property --digit { syntax:"<integer>"; inherits:true; initial-value:0; }
+@keyframes tick { 0%{--clock:0;} 25%{--clock:1;} 50%{--clock:2;} 75%{--clock:3;} }
+/* These two 1ms animations sample prior computed values and keep them while paused. */
+@keyframes store {0%,100% {--_storedA:var(--_outputA,0);--_storedB:var(--_outputB,1);}}
+@keyframes execute {0%,100% {--_outputA:var(--a);--_outputB:var(--b);}}
+.clock {animation:tick 2400ms steps(4,jump-end) infinite;--clock:0;}
+.cpu {
+  animation:store 1ms infinite, execute 1ms infinite;
+  animation-play-state:paused,paused;
+  @container style(--clock:1) {animation-play-state:running,paused;}
+  @container style(--clock:3) {animation-play-state:paused,running;}
+  --previousA:var(--_storedA,0);
+  --previousB:var(--_storedB,1);
+  --a:var(--previousB);
+  --b:mod(calc(var(--previousA) + var(--previousB)),100);
+  --next:mod(calc(var(--a) + var(--b)),100);
+}
+.segment {fill:#61efb4;opacity:0.08;}
+#display-a .segment {fill:#63e6aa;}
+#display-b .segment {fill:#ffca76;}
+#display-next .segment {fill:#95bcff;}
+.seg-a { opacity:if(style(--digit:0):1;style(--digit:2):1;style(--digit:3):1;style(--digit:5):1;style(--digit:6):1;style(--digit:7):1;style(--digit:8):1;style(--digit:9):1;else:0.08); }
+.seg-b { opacity:if(style(--digit:0):1;style(--digit:1):1;style(--digit:2):1;style(--digit:3):1;style(--digit:4):1;style(--digit:7):1;style(--digit:8):1;style(--digit:9):1;else:0.08); }
+.seg-c { opacity:if(style(--digit:0):1;style(--digit:1):1;style(--digit:3):1;style(--digit:4):1;style(--digit:5):1;style(--digit:6):1;style(--digit:7):1;style(--digit:8):1;style(--digit:9):1;else:0.08); }
+.seg-d { opacity:if(style(--digit:0):1;style(--digit:2):1;style(--digit:3):1;style(--digit:5):1;style(--digit:6):1;style(--digit:8):1;style(--digit:9):1;else:0.08); }
+.seg-e { opacity:if(style(--digit:0):1;style(--digit:2):1;style(--digit:6):1;style(--digit:8):1;else:0.08); }
+.seg-f { opacity:if(style(--digit:0):1;style(--digit:4):1;style(--digit:5):1;style(--digit:6):1;style(--digit:8):1;style(--digit:9):1;else:0.08); }
+.seg-g { opacity:if(style(--digit:2):1;style(--digit:3):1;style(--digit:4):1;style(--digit:5):1;style(--digit:6):1;style(--digit:8):1;style(--digit:9):1;else:0.08); }
+#unsupported {display:block;}
+@supports (opacity:if(style(--digit:0):1;else:0.08)) {#unsupported {display:none;}}
+@media (prefers-reduced-motion:reduce) {.clock {animation:none;}}
+
+]]></style>
+<rect width="930" height="315" rx="17" fill="#122335"/>
+<text x="30" y="36" fill="#e3f1ff" font-family="monospace" font-size="24" font-weight="bold">FIBONACCI / STATEFUL SVG</text>
+<text x="30" y="61" fill="#a1c0d0" font-family="monospace" font-size="14">JavaScript OFF   /   images only   /   CSS is the state machine</text>
+<g class="clock"><g class="cpu">
+<rect x="30" y="80" width="277" height="184" rx="12" fill="#20354a"/>
+<text x="50" y="107" fill="#b9d0e6" font-family="monospace" font-size="16">PREVIOUS</text>
+<g id="display-a" transform="translate(84,119) scale(0.55)"><g id="a-0" transform="translate(0,0)" style="--digit:round(down,var(--a) / 10, 1)"><rect class="segment seg-a" x="14" y="0" width="74" height="12" rx="5"/><rect class="segment seg-b" x="88" y="12" width="12" height="68" rx="5"/><rect class="segment seg-c" x="88" y="86" width="12" height="68" rx="5"/><rect class="segment seg-d" x="14" y="154" width="74" height="12" rx="5"/><rect class="segment seg-e" x="2" y="86" width="12" height="68" rx="5"/><rect class="segment seg-f" x="2" y="12" width="12" height="68" rx="5"/><rect class="segment seg-g" x="14" y="77" width="74" height="12" rx="5"/></g><g id="a-1" transform="translate(105,0)" style="--digit:mod(var(--a), 10)"><rect class="segment seg-a" x="14" y="0" width="74" height="12" rx="5"/><rect class="segment seg-b" x="88" y="12" width="12" height="68" rx="5"/><rect class="segment seg-c" x="88" y="86" width="12" height="68" rx="5"/><rect class="segment seg-d" x="14" y="154" width="74" height="12" rx="5"/><rect class="segment seg-e" x="2" y="86" width="12" height="68" rx="5"/><rect class="segment seg-f" x="2" y="12" width="12" height="68" rx="5"/><rect class="segment seg-g" x="14" y="77" width="74" height="12" rx="5"/></g></g>
+<text x="222" y="244" fill="#91a8ba" font-family="monospace" font-size="13">F(n)</text>
+<rect x="323" y="80" width="277" height="184" rx="12" fill="#20354a"/>
+<text x="343" y="107" fill="#b9d0e6" font-family="monospace" font-size="16">CURRENT</text>
+<g id="display-b" transform="translate(377,119) scale(0.55)"><g id="b-0" transform="translate(0,0)" style="--digit:round(down,var(--b) / 10, 1)"><rect class="segment seg-a" x="14" y="0" width="74" height="12" rx="5"/><rect class="segment seg-b" x="88" y="12" width="12" height="68" rx="5"/><rect class="segment seg-c" x="88" y="86" width="12" height="68" rx="5"/><rect class="segment seg-d" x="14" y="154" width="74" height="12" rx="5"/><rect class="segment seg-e" x="2" y="86" width="12" height="68" rx="5"/><rect class="segment seg-f" x="2" y="12" width="12" height="68" rx="5"/><rect class="segment seg-g" x="14" y="77" width="74" height="12" rx="5"/></g><g id="b-1" transform="translate(105,0)" style="--digit:mod(var(--b), 10)"><rect class="segment seg-a" x="14" y="0" width="74" height="12" rx="5"/><rect class="segment seg-b" x="88" y="12" width="12" height="68" rx="5"/><rect class="segment seg-c" x="88" y="86" width="12" height="68" rx="5"/><rect class="segment seg-d" x="14" y="154" width="74" height="12" rx="5"/><rect class="segment seg-e" x="2" y="86" width="12" height="68" rx="5"/><rect class="segment seg-f" x="2" y="12" width="12" height="68" rx="5"/><rect class="segment seg-g" x="14" y="77" width="74" height="12" rx="5"/></g></g>
+<text x="515" y="244" fill="#91a8ba" font-family="monospace" font-size="13">F(n+1)</text>
+<rect x="616" y="80" width="277" height="184" rx="12" fill="#20354a"/>
+<text x="636" y="107" fill="#b9d0e6" font-family="monospace" font-size="16">NEXT</text>
+<g id="display-next" transform="translate(670,119) scale(0.55)"><g id="next-0" transform="translate(0,0)" style="--digit:round(down,var(--next) / 10, 1)"><rect class="segment seg-a" x="14" y="0" width="74" height="12" rx="5"/><rect class="segment seg-b" x="88" y="12" width="12" height="68" rx="5"/><rect class="segment seg-c" x="88" y="86" width="12" height="68" rx="5"/><rect class="segment seg-d" x="14" y="154" width="74" height="12" rx="5"/><rect class="segment seg-e" x="2" y="86" width="12" height="68" rx="5"/><rect class="segment seg-f" x="2" y="12" width="12" height="68" rx="5"/><rect class="segment seg-g" x="14" y="77" width="74" height="12" rx="5"/></g><g id="next-1" transform="translate(105,0)" style="--digit:mod(var(--next), 10)"><rect class="segment seg-a" x="14" y="0" width="74" height="12" rx="5"/><rect class="segment seg-b" x="88" y="12" width="12" height="68" rx="5"/><rect class="segment seg-c" x="88" y="86" width="12" height="68" rx="5"/><rect class="segment seg-d" x="14" y="154" width="74" height="12" rx="5"/><rect class="segment seg-e" x="2" y="86" width="12" height="68" rx="5"/><rect class="segment seg-f" x="2" y="12" width="12" height="68" rx="5"/><rect class="segment seg-g" x="14" y="77" width="74" height="12" rx="5"/></g></g>
+<text x="808" y="244" fill="#91a8ba" font-family="monospace" font-size="13">F(n+2)</text>
+</g></g>
+<text id="unsupported" x="110" y="172" fill="#ffffff" font-family="monospace" font-size="18">Advanced CSS unsupported: static fallback</text>
+<text x="30" y="295" fill="#93a6ba" font-family="monospace" font-size="15">At each tick: (a,b) ← (b,(a+b) mod 100)   •   state persists in browser RAM</text>
+</svg>
