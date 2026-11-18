@@ -18,3 +18,25 @@
     <img src="https://github-profile-trophy.vercel.app/?username=otonasi-muonn&theme=radical&margin-w=15&no-frame=true&column=7" alt="GitHub Trophy" />
   </a>
 </p>
+
+## 🧪 CSSで計算するSVG（実験）
+
+JavaScriptもサーバーも使わず、**画像ファイル内のCSSが数値を二乗**して、7セグメント表示器に結果を描画します。
+
+![SVG内のCSSによる計算: nの二乗](./assets/css-compute.svg)
+
+**仕組み:** CSSアニメーションが `n` を変化させ、`calc()`・`mod()`・`round()`・`if()` が計算と描画を担当。HTMLやJavaScriptは画像の内部にありません。
+
+※ Chromium 144の`<img>`環境では演算・表示を確認。**GitHubのREADME上で同じように動くかは、この実験で検証します。** 非対応ブラウザや画像処理環境では静止表示になる場合があります。
+
+<details>
+<summary>表示が動かないときの比較テスト</summary>
+
+下の2つの点は、それぞれ通常のCSSアニメーションとSVG標準のアニメーション（SMIL）で点滅する比較対象です。
+
+![SVGアニメーションの比較テスト](./assets/svg-animation-control.svg)
+
+- 両方止まる：画像のアニメーション自体が無効になっている可能性
+- 比較テストは動くが計算画像は止まる：高度なCSS機能への非対応などの可能性
+
+</details>
