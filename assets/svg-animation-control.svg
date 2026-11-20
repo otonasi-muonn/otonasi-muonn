@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="112" viewBox="0 0 720 112">
+<title>SVG animation controls: CSS and SMIL</title>
+<desc>Two animations check the basic capabilities of an SVG image host. No JavaScript.</desc>
+<style><![CDATA[
+@keyframes pulse {from {opacity:0.1;} to {opacity:1;}}
+#css-dot {animation:pulse 1.2s ease-in-out alternate infinite;}
+]]></style>
+<rect width="720" height="112" rx="15" fill="#152435"/>
+<text x="23" y="24" font-family="monospace" font-size="15" fill="#aed1d6">ANIMATION CONTROLS / CSS vs SVG SMIL</text>
+<circle id="css-dot" cx="110" cy="60" r="15" fill="#5df0ae"/>
+<text x="145" y="65" font-family="monospace" font-size="15" fill="#b2c3ce">CSS blink</text>
+<circle cx="430" cy="60" r="15" fill="#ffc76a"><animate attributeName="opacity" values="0.1;1;0.1" dur="2s" repeatCount="indefinite"/></circle>
+<text x="465" y="65" font-family="monospace" font-size="15" fill="#b2c3ce">SVG blink</text>
+<text x="23" y="100" font-family="monospace" font-size="12" fill="#91a5b5">Both static? The renderer may freeze SVG animations.</text>
+</svg>
